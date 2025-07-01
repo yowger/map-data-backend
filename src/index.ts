@@ -6,6 +6,7 @@ import helmet from "helmet"
 import v1Routes from "./routes/v1"
 import { createCorsOptions } from "./services/cors/config"
 import { connectDatabase } from "./services/mongoose/mongoose"
+import { errorHandler } from "./utils/errorHandler"
 
 const PORT = process.env.PORT || 3000
 
@@ -27,6 +28,7 @@ app.use("/api/v1", v1Routes)
 app.use((req, res) => {
     res.status(404).json({ message: "Not Found", path: req.originalUrl })
 })
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     return console.log(`Server running on port ${PORT}`)
