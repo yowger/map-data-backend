@@ -3,7 +3,8 @@ import compression from "compression"
 import express from "express"
 import helmet from "helmet"
 
-import { connectDatabase } from "./services/mongoose"
+import { connectDatabase } from "./services/mongoose/mongoose"
+import v1Routes from "./routes/v1"
 
 const PORT = process.env.PORT || 3000
 
@@ -33,6 +34,11 @@ app.use(
     express.urlencoded({ limit: "1mb", extended: true, parameterLimit: 5000 })
 )
 app.use(compression())
+
+app.use("/api/v1", v1Routes)
+app.use((req, res) => {
+    res.status(404).json({ message: "Not Found", path: req.originalUrl })
+})
 
 app.listen(PORT, () => {
     return console.log(`Server running on port ${PORT}`)
