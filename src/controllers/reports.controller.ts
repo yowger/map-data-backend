@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { z } from "zod"
 
 import { createReport } from "../services/mongoose/reports.service"
+import Report from "../services/mongoose/models/reports.model"
 import { validator } from "../utils/validator"
 
 export const verifiedInfoSchema = z.object({
@@ -62,14 +63,16 @@ export async function createReportHandler(req: Request, res: Response) {
     res.status(201).json({ report })
 }
 
-export async function getReport(req: Request, res: Response) {
+export async function getReportHandler(req: Request, res: Response) {
     res.json({ message: "get reports" })
 }
 
-export async function getReports(req: Request, res: Response) {
-    res.json({ message: "get report" })
+export async function getReportsHandler(req: Request, res: Response) {
+    const reports = await Report.find()
+
+    res.json({ reports })
 }
 
-export async function updateReport(req: Request, res: Response) {
+export async function updateReportHandler(req: Request, res: Response) {
     res.json({ message: "update report" })
 }

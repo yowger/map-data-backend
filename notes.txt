@@ -7,3 +7,11 @@ const boundingBox = bbox(selectedBarangay) as [number, number, number, number]
 
 const point = getRandomPointInPolygon(geometry, boundingBox)
 console.log("Generated point inside polygon:", point)
+
+--
+
+when inserting reports
+    -> check if lat, lang exist within inside polygon
+    -> if exist, get and place barangayId
+        -> else deny insert or a a way to tell data its out of bounds.
+    

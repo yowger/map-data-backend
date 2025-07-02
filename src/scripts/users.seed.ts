@@ -1,6 +1,6 @@
 import { Types } from "mongoose"
 
-import User from "../services/mongoose/models/user.model"
+import User from "../services/mongoose/models/users.model"
 import {
     connectDatabase,
     disconnectDatabase,

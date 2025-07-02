@@ -27,7 +27,8 @@
         "build": "tsc",
         "start": "node ./dist/index.js",
         "dev": "nodemon src/index.ts",
-        "seed:users": "ts-node src/scripts/users.seed.ts"
+        "seed:users": "ts-node src/scripts/users.seed.ts",
+        "seed:reports": "ts-node src/scripts/reports.seed.ts"
     },
     "keywords": [],
     "author": "",

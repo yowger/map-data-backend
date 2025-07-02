@@ -1,15 +1,15 @@
 import { Router } from "express"
 import {
     createReportHandler,
-    getReport,
-    updateReport,
+    getReportsHandler,
+    updateReportHandler,
 } from "../../controllers/reports.controller"
 import { asyncHandler } from "../../utils/asyncHandler"
 
 const router = Router()
 
 router.post("/", asyncHandler(createReportHandler))
-router.get("/", asyncHandler(getReport))
-router.put("/:id", asyncHandler(updateReport))
+router.get("/", asyncHandler(getReportsHandler))
+router.put("/:id", asyncHandler(updateReportHandler))
 
 export default router
