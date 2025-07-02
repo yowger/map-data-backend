@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "@faker-js/faker": "^9.9.0",
         "compression": "^1.8.0",
         "cors": "^2.8.5",
         "dotenv": "^17.0.1",
@@ -21,7 +22,8 @@
     "scripts": {
         "build": "tsc",
         "start": "node ./dist/index.js",
-        "dev": "nodemon src/index.ts"
+        "dev": "nodemon src/index.ts",
+        "seed:users": "ts-node src/scripts/users.seed.ts"
     },
     "keywords": [],
     "author": "",
