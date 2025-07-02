@@ -13,4 +13,8 @@ async function resetDatabase() {
     await database.disconnect()
 }
 
-resetDatabase()
+resetDatabase().catch((err) => {
+    console.error("Error resetting database:", err)
+
+    database.disconnect()
+})

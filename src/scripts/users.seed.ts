@@ -93,4 +93,8 @@ async function seedUsers() {
     }
 }
 
-seedUsers()
+seedUsers().catch((err) => {
+    console.error("Error seeding users:", err)
+
+    database.disconnect()
+})

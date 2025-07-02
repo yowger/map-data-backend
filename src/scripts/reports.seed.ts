@@ -9,19 +9,19 @@ import { getRandomPointInPolygon } from "../services/turf/turf.services"
 
 const chance = 0.4
 
-const imageCategoryMap: Record<string, string[]> = {
-    Flood: ["flood", "disaster", "water"],
-    Landslide: ["landslide", "disaster", "mountain"],
-    Garbage: ["garbage", "pollution", "waste"],
-    "Road Damage": ["road", "damage", "street"],
-    "Blocked Drainage": ["drain", "flood", "infrastructure"],
-    "Power Outage": ["power", "electricity", "infrastructure"],
-    "Missing Person": ["person", "crowd", "street"],
-    "Missing Animal": ["dog", "cat", "animal"],
-    "Missing Vehicle": ["car", "vehicle", "street"],
-    "Missing Object": ["lost", "item", "object"],
-    Other: ["disaster", "random", "nature"],
-}
+const categories = [
+    "Flood",
+    "Landslide",
+    "Garbage",
+    "Road Damage",
+    "Blocked Drainage",
+    "Power Outage",
+    "Missing Person",
+    "Missing Animal",
+    "Missing Vehicle",
+    "Missing Object",
+    "Other",
+]
 
 async function seedReports() {
     await database.connect()
@@ -41,18 +41,14 @@ async function seedReports() {
 
         for (let i = 0; i < reportsCount; i++) {
             const point = getRandomPointInPolygon(polygon, boundingBox)
-            const type = faker.helpers.arrayElement(
-                Object.keys(imageCategoryMap)
-            )
-            const categories = imageCategoryMap[type]
+            const type = faker.helpers.arrayElement(categories)
 
-            const imageUrls = faker.helpers.arrayElements(
-                categories.map((cat) =>
-                    faker.image.urlLoremFlickr({ category: cat })
-                ),
-                faker.number.int({
-                    min: 0,
-                    max: Math.min(categories.length, 4),
+            const imageUrls = Array.from({
+                length: faker.number.int({ min: 0, max: 4 }),
+            }).map(() =>
+                faker.image.urlPicsumPhotos({
+                    width: 640,
+                    height: 480,
                 })
             )
 
@@ -95,5 +91,3 @@ seedReports().catch((err) => {
 
     database.disconnect()
 })
-
-seedReports()
