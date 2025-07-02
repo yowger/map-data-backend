@@ -8,7 +8,7 @@ const ReportSchema = new Schema(
         lat: { type: Number, required: true },
         lng: { type: Number, required: true },
         imageUrls: [String],
-        authorId: { type: Types.ObjectId },
+        authorId: { type: Types.ObjectId, required: true },
         status: {
             type: String,
             enum: ["pending", "verified", "rejected", "archived"],

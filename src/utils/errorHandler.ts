@@ -1,7 +1,15 @@
-import { ErrorRequestHandler } from "express"
+import { Request, Response } from "express"
+import { ValidationException } from "../errors"
 
-export const errorHandler: ErrorRequestHandler = (err, _req, res) => {
-    res.status(err.status || 500).json({
-        message: err.message || "Internal Server Error",
+export const errorHandler = (err: Error, req: Request, res: Response) => {
+    if (err instanceof ValidationException) {
+        res.status(err.status).json({
+            message: err.message,
+            errors: err.details,
+        })
+    }
+
+    res.status(500).json({
+        message: "Internal Server Error",
     })
 }
