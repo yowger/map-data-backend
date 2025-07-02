@@ -1,10 +1,7 @@
 import { faker } from "@faker-js/faker"
 import bbox from "@turf/bbox"
 
-import {
-    connectDatabase,
-    disconnectDatabase,
-} from "../services/mongoose/mongoose"
+import database from "../services/mongoose/mongoose"
 import Report from "../services/mongoose/models/reports.model"
 import User from "../services/mongoose/models/users.model"
 import { readBarangayGeoJSON } from "../services/geojson/readBarangayGeo"
@@ -27,7 +24,7 @@ const imageCategoryMap: Record<string, string[]> = {
 }
 
 async function seedReports() {
-    await connectDatabase()
+    await database.connect()
 
     const users = await User.find({})
     const moderator = users.find((u) => u.role === "moderator")
@@ -41,7 +38,7 @@ async function seedReports() {
         const boundingBox = bbox(barangay) as [number, number, number, number]
 
         const reportsCount = faker.number.int({ min: 0, max: 20 })
-        
+
         for (let i = 0; i < reportsCount; i++) {
             const point = getRandomPointInPolygon(polygon, boundingBox)
             const type = faker.helpers.arrayElement(
@@ -90,13 +87,13 @@ async function seedReports() {
     await Report.insertMany(reports)
 
     console.log(`Seeded ${reports.length} reports.`)
-    await disconnectDatabase()
+    await database.disconnect()
 }
 
 seedReports().catch((err) => {
     console.error("Error seeding reports:", err)
 
-    disconnectDatabase()
+    database.disconnect()
 })
 
 seedReports()

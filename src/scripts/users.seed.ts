@@ -1,10 +1,7 @@
 import { Types } from "mongoose"
 
 import User from "../services/mongoose/models/users.model"
-import {
-    connectDatabase,
-    disconnectDatabase,
-} from "../services/mongoose/mongoose"
+import database from "../services/mongoose/mongoose"
 
 const users = [
     {
@@ -83,7 +80,7 @@ const users = [
 
 async function seedUsers() {
     try {
-        await connectDatabase()
+        await database.connect()
 
         await User.deleteMany({})
         await User.insertMany(users)
@@ -92,7 +89,7 @@ async function seedUsers() {
     } catch (error) {
         console.error("Error seeding users:", error)
     } finally {
-        await disconnectDatabase()
+        await database.disconnect()
     }
 }
 

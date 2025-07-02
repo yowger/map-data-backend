@@ -5,12 +5,16 @@ import helmet from "helmet"
 
 import v1Routes from "./routes/v1"
 import { createCorsOptions } from "./services/cors/config"
-import { connectDatabase } from "./services/mongoose/mongoose"
+import Database from "./services/mongoose/mongoose"
 import { errorHandler } from "./utils/errorHandler"
 
 const PORT = process.env.PORT || 3000
 
 const whitelist = ["http://localhost:3000"]
+
+async function connectDatabase() {
+    await Database.connect()
+}
 
 connectDatabase()
 

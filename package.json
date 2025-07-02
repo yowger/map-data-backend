@@ -28,7 +28,8 @@
         "start": "node ./dist/index.js",
         "dev": "nodemon src/index.ts",
         "seed:users": "ts-node src/scripts/users.seed.ts",
-        "seed:reports": "ts-node src/scripts/reports.seed.ts"
+        "seed:reports": "ts-node src/scripts/reports.seed.ts",
+        "seed:reset": "ts-node src/scripts/reset.seed.ts"
     },
     "keywords": [],
     "author": "",
