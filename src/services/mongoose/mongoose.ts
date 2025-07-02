@@ -37,16 +37,6 @@ class Database {
         return mongoose.connection.db
     }
 
-    public async drop() {
-        if (mongoose.connection.readyState !== CONNECTED) {
-            await this.connect()
-        }
-
-        await mongoose.connection.db.dropDatabase()
-
-        console.log("Dropped MongoDB database")
-    }
-
     public async disconnect() {
         await mongoose.disconnect()
     }
