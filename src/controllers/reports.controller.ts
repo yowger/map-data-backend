@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { z } from "zod"
 
-import { createReport } from "src/services/mongoose/reports.service"
-import { validator } from "src/utils/validator"
+import { createReport } from "../services/mongoose/reports.service"
+import { validator } from "../utils/validator"
 
 export const verifiedInfoSchema = z.object({
     verifiedBy: z.string().min(1),

@@ -1,0 +1,9 @@
+get random data within a boundary or polygon
+
+const barangays = readBarangayGeoJSON()
+const selectedBarangay = barangays.features[0]
+const geometry = selectedBarangay.geometry
+const boundingBox = bbox(selectedBarangay) as [number, number, number, number]
+
+const point = getRandomPointInPolygon(geometry, boundingBox)
+console.log("Generated point inside polygon:", point)
