@@ -9,7 +9,7 @@ import { asyncHandler } from "../../utils/asyncHandler"
 const router = Router()
 
 router.post("/", asyncHandler(createReportHandler))
-router.get("/", asyncHandler(getReportsHandler))
+router.get("/clusters", asyncHandler(getReportsHandler))
 router.put("/:id", asyncHandler(updateReportHandler))
 
 export default router

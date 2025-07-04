@@ -22,3 +22,10 @@ Seeding
 seed users first then reports
 
 --
+
+send barangay reports base on zoom
+     GET /api/reports/clusters?bbox=[minLng,minLat,maxLng,maxLat]&zoom=12
+     
+    -> frontend map viewport + zoom 
+    -> api request (query reports in bounds)
+    -> supercluster

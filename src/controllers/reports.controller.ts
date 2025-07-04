@@ -1,4 +1,7 @@
 import { Request, Response } from "express"
+import type { Feature, Point } from "geojson"
+import Supercluster from "supercluster"
+
 import { z } from "zod"
 
 import { createReport } from "../services/mongoose/reports.service"
@@ -27,6 +30,7 @@ const { getBody } = validator({
 })
 
 export async function createReportHandler(req: Request, res: Response) {
+    // add pinpoint location to barangay base on lan, lng
     const {
         type,
         message,
@@ -63,14 +67,70 @@ export async function createReportHandler(req: Request, res: Response) {
     res.status(201).json({ report })
 }
 
-export async function getReportHandler(req: Request, res: Response) {
-    res.json({ message: "get reports" })
-}
+const reportsQuerySchema = z.object({
+    bbox: z
+        .string()
+        .transform((val) =>
+            val
+                .replace(/[\[\]]/g, "")
+                .split(",")
+                .map(Number)
+        )
+        .refine((arr) => arr.length === 4 && arr.every((n) => !isNaN(n)), {
+            message: "bbox must be 4 valid numbers",
+        }),
+    zoom: z.coerce.number().int().nonnegative(),
+})
+
+const { getQuery } = validator({
+    query: reportsQuerySchema,
+})
 
 export async function getReportsHandler(req: Request, res: Response) {
-    const reports = await Report.find()
+    const { bbox, zoom } = getQuery(req)
+    console.log("🚀 ~ getReportsHandler ~ bbox:", bbox)
+    console.log("🚀 ~ getReportsHandler ~ zoom:", zoom)
 
-    res.json({ reports })
+    const [minLng, minLat, maxLng, maxLat] = bbox
+
+    const reports = await Report.find({
+        location: {
+            $geoWithin: {
+                $box: [
+                    [minLng, minLat],
+                    [maxLng, maxLat],
+                ],
+            },
+        },
+    })
+
+    const points: Feature<Point>[] = reports.map((r) => {
+        return {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: r.location!.coordinates,
+            },
+            properties: {
+                id: r._id.toString(),
+                type: r.type,
+            },
+        }
+    })
+
+    const cluster = new Supercluster({
+        radius: 40,
+        maxZoom: 18,
+    })
+
+    cluster.load(points)
+
+    const clusters = cluster.getClusters(
+        bbox as [number, number, number, number],
+        zoom
+    )
+
+    res.json(clusters)
 }
 
 export async function updateReportHandler(req: Request, res: Response) {

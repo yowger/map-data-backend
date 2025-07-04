@@ -1,7 +1,12 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { ValidationException } from "../errors"
 
-export const errorHandler = (err: Error, req: Request, res: Response) => {
+export function errorHandler(
+    err: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     if (err instanceof ValidationException) {
         res.status(err.status).json({
             message: err.message,
