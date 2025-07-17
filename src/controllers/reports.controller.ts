@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import type { Feature, Point } from "geojson"
 import Supercluster from "supercluster"
-
 import { z } from "zod"
 
 import { createReport } from "../services/mongoose/reports.service"
@@ -88,8 +87,6 @@ const { getQuery } = validator({
 
 export async function getReportsHandler(req: Request, res: Response) {
     const { bbox, zoom } = getQuery(req)
-    console.log("🚀 ~ getReportsHandler ~ bbox:", bbox)
-    console.log("🚀 ~ getReportsHandler ~ zoom:", zoom)
 
     const [minLng, minLat, maxLng, maxLat] = bbox
 
@@ -104,16 +101,16 @@ export async function getReportsHandler(req: Request, res: Response) {
         },
     })
 
-    const points: Feature<Point>[] = reports.map((r) => {
+    const points: Feature<Point>[] = reports.map((report) => {
         return {
             type: "Feature",
             geometry: {
                 type: "Point",
-                coordinates: r.location!.coordinates,
+                coordinates: report.location!.coordinates,
             },
             properties: {
-                id: r._id.toString(),
-                type: r.type,
+                id: report._id.toString(),
+                type: report.type,
             },
         }
     })
