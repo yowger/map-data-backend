@@ -2,28 +2,11 @@ import { Request, Response } from "express"
 
 import { barangaysList } from "../services/geojson/readBarangayGeo"
 import reportsModel from "../services/mongoose/models/reports.model"
+import type { Barangay, BarangayWithReportsList } from "src/types/map"
 
-export async function getBarangays(req: Request, res: Response) {
+export async function getBarangays(req: Request, res: Response<Barangay[]>) {
     res.status(200).json(barangaysList)
 }
-
-export type ReportSummary = {
-    _id: string
-    barangayId: string
-    type: string
-    status: "pending" | "verified" | "rejected" | "archived"
-    createdAt: string
-}
-
-export type BarangayWithReports = {
-    id: string
-    name: string
-    areaSqKm: number
-    areaHa: number
-    recentReports: ReportSummary[]
-}
-
-export type BarangayWithReportsList = BarangayWithReports[]
 
 export async function getBarangaysWithReports(
     req: Request,
@@ -35,6 +18,7 @@ export async function getBarangaysWithReports(
         },
         {
             $project: {
+                barangayId: 1,
                 type: 1,
                 status: 1,
                 createdAt: 1,
