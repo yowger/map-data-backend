@@ -11,3 +11,12 @@ export function readBarangayGeoJSON(): FeatureCollection {
 
     return json
 }
+
+export const barangayGeoJson = readBarangayGeoJSON()
+
+export const barangaysList = barangayGeoJson.features.map((feature) => ({
+    id: feature.properties.Brgy_id,
+    name: feature.properties.Brgy_Name,
+    areaSqKm: feature.properties.AREA_SQKM,
+    areaHa: feature.properties.AREA_HA,
+}))
