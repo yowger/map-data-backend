@@ -3,7 +3,7 @@ import { Types } from "mongoose"
 import User from "../services/mongoose/models/users.model"
 import database from "../services/mongoose/mongoose"
 
-const users = [
+const MOCKED_USERS = [
     {
         _id: new Types.ObjectId("60f7a1e8f6a2c0a1c4d1b001"),
         name: "Juan Dela Cruz",
@@ -83,7 +83,7 @@ async function seedUsers() {
         await database.connect()
 
         await User.deleteMany({})
-        await User.insertMany(users)
+        await User.insertMany(MOCKED_USERS)
 
         console.log("Users seeded successfully")
     } catch (error) {

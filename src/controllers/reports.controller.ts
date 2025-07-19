@@ -8,7 +8,7 @@ import Report from "../services/mongoose/models/reports.model"
 import { validator } from "../utils/validator"
 import { Types } from "mongoose"
 import { getBarangayName } from "../services/geojson/barangayUtils"
-import usersModel from "../services/mongoose/models/users.model"
+import User from "../services/mongoose/models/users.model"
 
 export const verifiedInfoSchema = z.object({
     verifiedBy: z.string().min(1),
@@ -130,9 +130,9 @@ export async function getReportsHandler(req: Request, res: Response) {
         .sort({ _id: -1 })
         .limit(Number(limit))
         .populate({
-            path: "_id",
-            model: usersModel,
+            path: "author",
             select: "_id name email avatarUrl",
+            model: User,
         })
         .select("-__v")
         .lean()

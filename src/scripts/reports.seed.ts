@@ -7,9 +7,9 @@ import User from "../services/mongoose/models/users.model"
 import { readBarangayGeoJSON } from "../services/geojson/barangayUtils"
 import { getRandomPointInPolygon } from "../services/turf/turf.services"
 
-const chance = 0.4
+const VERIFIED_CHANCE = 0.4
 
-const categories = [
+const EVENT_CATEGORIES = [
     "Flood",
     "Landslide",
     "Garbage",
@@ -41,7 +41,7 @@ async function seedReports() {
 
         for (let i = 0; i < reportsCount; i++) {
             const point = getRandomPointInPolygon(polygon, boundingBox)
-            const type = faker.helpers.arrayElement(categories)
+            const type = faker.helpers.arrayElement(EVENT_CATEGORIES)
 
             const imageUrls = Array.from({
                 length: faker.number.int({ min: 0, max: 4 }),
@@ -52,7 +52,7 @@ async function seedReports() {
                 })
             )
 
-            const isVerified = Math.random() < chance
+            const isVerified = Math.random() < VERIFIED_CHANCE
             const verifiedInfo =
                 isVerified && moderator
                     ? {
