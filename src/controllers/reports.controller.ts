@@ -126,6 +126,8 @@ export async function getReportsHandler(req: Request, res: Response) {
     const reports = await Report.find(query)
         .sort({ _id: -1 })
         .limit(Number(limit))
+        .select("-__v")
+        .lean()
 
     const nextCursor =
         reports.length > 0 ? reports[reports.length - 1]._id : null
