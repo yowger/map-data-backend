@@ -67,7 +67,7 @@ async function seedReports() {
                 imageUrls,
                 lat: point.lat,
                 lng: point.lng,
-                authorId: faker.helpers.arrayElement(users)._id,
+                author: faker.helpers.arrayElement(users)._id,
                 barangayId: barangay.properties.Brgy_id,
                 location: {
                     type: "Point",
