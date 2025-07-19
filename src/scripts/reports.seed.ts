@@ -4,7 +4,7 @@ import bbox from "@turf/bbox"
 import database from "../services/mongoose/mongoose"
 import Report from "../services/mongoose/models/reports.model"
 import User from "../services/mongoose/models/users.model"
-import { readBarangayGeoJSON } from "../services/geojson/readBarangayGeo"
+import { readBarangayGeoJSON } from "../services/geojson/barangayUtils"
 import { getRandomPointInPolygon } from "../services/turf/turf.services"
 
 const chance = 0.4

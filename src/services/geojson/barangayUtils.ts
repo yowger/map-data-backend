@@ -20,3 +20,9 @@ export const barangaysList = barangayGeoJson.features.map((feature) => ({
     areaSqKm: feature.properties.AREA_SQKM,
     areaHa: feature.properties.AREA_HA,
 }))
+
+export function getBarangayName(id: string) {
+    return (
+        barangaysList.find((barangay) => barangay.id === id)?.name || "Unknown"
+    )
+}

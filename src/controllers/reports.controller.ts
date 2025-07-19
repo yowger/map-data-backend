@@ -7,6 +7,7 @@ import { createReport } from "../services/mongoose/reports.service"
 import Report from "../services/mongoose/models/reports.model"
 import { validator } from "../utils/validator"
 import { Types } from "mongoose"
+import { getBarangayName } from "../services/geojson/barangayUtils"
 
 export const verifiedInfoSchema = z.object({
     verifiedBy: z.string().min(1),
@@ -91,6 +92,7 @@ const { getQuery } = validator({
         add max limit
         refactor 
         query validation
+        add type
 */
 export async function getReportsHandler(req: Request, res: Response) {
     const {
@@ -129,10 +131,15 @@ export async function getReportsHandler(req: Request, res: Response) {
         .select("-__v")
         .lean()
 
+    const enhancedReports = reports.map((report) => ({
+        ...report,
+        barangayName: getBarangayName(report.barangayId),
+    }))
+
     const nextCursor =
         reports.length > 0 ? reports[reports.length - 1]._id : null
 
-    res.json({ items: reports, nextCursor })
+    res.json({ items: enhancedReports, nextCursor })
 }
 
 export async function getClusterReportsHandler(req: Request, res: Response) {

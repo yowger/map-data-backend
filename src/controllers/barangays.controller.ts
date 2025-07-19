@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 
-import { barangaysList } from "../services/geojson/readBarangayGeo"
+import { barangaysList } from "../services/geojson/barangayUtils"
 import reportsModel from "../services/mongoose/models/reports.model"
 import type { Barangay, BarangayWithReportsList } from "src/types/map"
 
