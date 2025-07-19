@@ -6,6 +6,7 @@ import { z } from "zod"
 import { createReport } from "../services/mongoose/reports.service"
 import Report from "../services/mongoose/models/reports.model"
 import { validator } from "../utils/validator"
+import { Types } from "mongoose"
 
 export const verifiedInfoSchema = z.object({
     verifiedBy: z.string().min(1),
@@ -85,7 +86,54 @@ const { getQuery } = validator({
     query: reportsQuerySchema,
 })
 
+/*
+    TODO:
+        add max limit
+        refactor 
+        query validation
+*/
 export async function getReportsHandler(req: Request, res: Response) {
+    const {
+        cursor,
+        limit = 20,
+        barangayId: barangayIds,
+        type: hazardTypes,
+        status: statuses,
+    } = req.query
+
+    const query: any = {}
+
+    if (cursor) {
+        query._id = { $lt: new Types.ObjectId(cursor as string) }
+    }
+
+    if (barangayIds) {
+        query.barangayId = Array.isArray(barangayIds)
+            ? { $in: barangayIds }
+            : barangayIds
+    }
+
+    if (hazardTypes) {
+        query.type = Array.isArray(hazardTypes)
+            ? { $in: hazardTypes }
+            : hazardTypes
+    }
+
+    if (statuses) {
+        query.status = Array.isArray(statuses) ? { $in: statuses } : statuses
+    }
+
+    const reports = await Report.find(query)
+        .sort({ _id: -1 })
+        .limit(Number(limit))
+
+    const nextCursor =
+        reports.length > 0 ? reports[reports.length - 1]._id : null
+
+    res.json({ items: reports, nextCursor })
+}
+
+export async function getClusterReportsHandler(req: Request, res: Response) {
     const { bbox, zoom } = getQuery(req)
 
     const [minLng, minLat, maxLng, maxLat] = bbox
