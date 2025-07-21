@@ -60,6 +60,10 @@ async function seedReports() {
                           verifiedAt: faker.date.recent({ days: 7 }),
                       }
                     : undefined
+            const createdAt = faker.date.between({
+                from: faker.date.recent({ days: 365 }),
+                to: new Date(),
+            })
 
             reports.push({
                 title: faker.lorem.words({ min: 3, max: 7 }),
@@ -77,6 +81,8 @@ async function seedReports() {
                 },
                 status: isVerified ? "verified" : "pending",
                 verifiedInfo,
+                createdAt,
+                updatedAt: createdAt,
             })
         }
     }
