@@ -40,8 +40,8 @@ async function seedReports() {
         const reportsCount = faker.number.int({ min: 0, max: 20 })
 
         for (let i = 0; i < reportsCount; i++) {
-            const point = getRandomPointInPolygon(polygon, boundingBox)
-            const type = faker.helpers.arrayElement(EVENT_CATEGORIES)
+            const randomPoint = getRandomPointInPolygon(polygon, boundingBox)
+            const randomType = faker.helpers.arrayElement(EVENT_CATEGORIES)
 
             const imageUrls = Array.from({
                 length: faker.number.int({ min: 0, max: 4 }),
@@ -62,16 +62,18 @@ async function seedReports() {
                     : undefined
 
             reports.push({
-                type,
+                title: faker.lorem.words({ min: 3, max: 7 }),
+                description: faker.lorem.paragraphs({ min: 1, max: 3 }),
+                type: randomType,
                 message: faker.lorem.sentence(),
                 imageUrls,
-                lat: point.lat,
-                lng: point.lng,
+                lat: randomPoint.lat,
+                lng: randomPoint.lng,
                 author: faker.helpers.arrayElement(users)._id,
                 barangayId: barangay.properties.Brgy_id,
                 location: {
                     type: "Point",
-                    coordinates: [point.lng, point.lat],
+                    coordinates: [randomPoint.lng, randomPoint.lat],
                 },
                 status: isVerified ? "verified" : "pending",
                 verifiedInfo,

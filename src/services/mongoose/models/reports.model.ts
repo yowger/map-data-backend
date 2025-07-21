@@ -2,6 +2,19 @@ import { Schema, model, Types } from "mongoose"
 
 const ReportSchema = new Schema(
     {
+        title: {
+            type: String,
+            required: true,
+            minlength: 3,
+            maxlength: 100,
+            trim: true,
+        },
+        description: {
+            type: String,
+            required: false,
+            maxlength: 1000,
+            trim: true,
+        },
         barangayId: { type: String },
         type: { type: String, required: true },
         message: String,
