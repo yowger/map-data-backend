@@ -96,13 +96,7 @@ const { getQuery } = validator({
         add type
 */
 export async function getReportsHandler(req: Request, res: Response) {
-    const {
-        cursor,
-        limit = 20,
-        barangayIds,
-        type: hazardTypes,
-        status: statuses,
-    } = req.query
+    const { cursor, limit = 20, barangayIds, types, statuses } = req.query
 
     const query: any = {}
 
@@ -116,16 +110,13 @@ export async function getReportsHandler(req: Request, res: Response) {
             : barangayIds
     }
 
-    if (hazardTypes) {
-        query.type = Array.isArray(hazardTypes)
-            ? { $in: hazardTypes }
-            : hazardTypes
+    if (types) {
+        query.type = Array.isArray(types) ? { $in: types } : types
     }
 
     if (statuses) {
         query.status = Array.isArray(statuses) ? { $in: statuses } : statuses
     }
-    console.log("🚀 ~ getReportsHandler ~ query:", query)
 
     const reports = await Report.find(query)
         .sort({ _id: -1 })
