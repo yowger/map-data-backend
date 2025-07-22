@@ -96,7 +96,15 @@ const { getQuery } = validator({
         add type
 */
 export async function getReportsHandler(req: Request, res: Response) {
-    const { cursor, limit = 20, barangayIds, types, statuses } = req.query
+    const {
+        cursor,
+        limit = 20,
+        barangayIds,
+        types,
+        statuses,
+        from,
+        to,
+    } = req.query
 
     const query: any = {}
 
@@ -116,6 +124,16 @@ export async function getReportsHandler(req: Request, res: Response) {
 
     if (statuses) {
         query.status = Array.isArray(statuses) ? { $in: statuses } : statuses
+    }
+
+    if (from || to) {
+        query.createdAt = {}
+        if (from) {
+            query.createdAt.$gte = new Date(from as string)
+        }
+        if (to) {
+            query.createdAt.$lte = new Date(to as string)
+        }
     }
 
     const reports = await Report.find(query)
