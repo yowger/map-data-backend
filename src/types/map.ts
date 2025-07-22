@@ -9,11 +9,14 @@ export type ReportSummary = {
 export type Barangay = {
     id: string
     name: string
-    areaSqKm: number
-    areaHa: number
 }
 
-export type BarangayWithReports = Barangay & {
+export type BarangayWithAreas = {
+    areaSqKm: number
+    areaHa: number
+} & Barangay
+
+export type BarangayWithReports = BarangayWithAreas & {
     recentReports: ReportSummary[]
 }
 

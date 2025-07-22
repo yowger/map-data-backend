@@ -99,7 +99,7 @@ export async function getReportsHandler(req: Request, res: Response) {
     const {
         cursor,
         limit = 20,
-        barangayId: barangayIds,
+        barangayIds,
         type: hazardTypes,
         status: statuses,
     } = req.query
@@ -125,6 +125,7 @@ export async function getReportsHandler(req: Request, res: Response) {
     if (statuses) {
         query.status = Array.isArray(statuses) ? { $in: statuses } : statuses
     }
+    console.log("🚀 ~ getReportsHandler ~ query:", query)
 
     const reports = await Report.find(query)
         .sort({ _id: -1 })

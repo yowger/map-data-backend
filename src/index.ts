@@ -2,6 +2,7 @@ import cors from "cors"
 import compression from "compression"
 import express from "express"
 import helmet from "helmet"
+import morgan from "morgan"
 
 import v1Routes from "./routes/v1"
 import { createCorsOptions } from "./services/cors/config"
@@ -27,6 +28,7 @@ app.use(
     express.urlencoded({ limit: "1mb", extended: true, parameterLimit: 5000 })
 )
 app.use(compression())
+app.use(morgan("dev"))
 
 app.use("/api/v1", v1Routes)
 app.use((req, res) => {

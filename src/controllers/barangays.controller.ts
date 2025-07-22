@@ -5,7 +5,12 @@ import reportsModel from "../services/mongoose/models/reports.model"
 import type { Barangay, BarangayWithReportsList } from "src/types/map"
 
 export async function getBarangays(req: Request, res: Response<Barangay[]>) {
-    res.status(200).json(barangaysList)
+    const simplified = barangaysList.map((barangay) => ({
+        id: barangay.id,
+        name: barangay.name,
+    }))
+
+    res.status(200).json(simplified)
 }
 
 export async function getBarangaysWithReports(

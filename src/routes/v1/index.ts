@@ -1,11 +1,11 @@
 import { Router } from "express"
 
 import reportRoutes from "./reports.routes"
-import barangayRouters from "./barangays.routes"
+import barangayRoutes from "./barangays.routes"
 
 const router = Router()
 
 router.use("/reports", reportRoutes)
-router.use("/barangays", barangayRouters)
+router.use("/barangays", barangayRoutes)
 
 export default router
